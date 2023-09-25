@@ -1,20 +1,30 @@
+import modules.scripts as scripts
 import gradio as gr
-import torch  # Assuming you are using PyTorch for CUDA operations
+import torch
+import os
+import contextlib
 
-def reset_cuda_memory():
-    torch.cuda.empty_cache()
-    return "CUDA memory reset successfully!"
+class ExtensionTemplateScript(scripts.Script):
+    def title(self):
+        return "RESET CUDA MEMORY"
 
-def main_gui():
-    with gr.Interface(fn=reset_cuda_memory, outputs="text", live=True) as interface:
-        with gr.Accordion("RESET CUDA MEMORY"):
-            reset_button = gr.Button("RESET")
-            info = gr.Info("Waiting for user action...")
-            interface.add_components([reset_button, info])
-        
-        reset_button.click(reset_cuda_memory, outputs=[info])
+    def show(info, is_img2img):
+        return scripts.AlwaysVisible
 
-    interface.launch()
+    def reset_cuda_memory(self):  # Přidání 'self' jako prvního argumentu
+        torch.cuda.empty_cache()
+        return "CUDA memory reset successfully!"
 
-if __name__ == "__main__":
-    main_gui()
+    def ui(self, is_img2img):
+        with gr.Accordion("RESET CUDA MEMORY", open=False):
+            with gr.Row():
+                reset_button = gr.Button("RESET")
+                info = gr.Info("Waiting for user action...")
+
+        with contextlib.suppress(AttributeError):
+            if is_img2img:
+                reset_button.click(self.reset_cuda_memory, outputs=[info])  # Použití self.reset_cuda_memory
+            else:
+                reset_button.click(self.reset_cuda_memory, outputs=[info])
+
+        return [reset_button, info]
