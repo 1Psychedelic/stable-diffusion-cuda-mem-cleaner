@@ -9,7 +9,7 @@ def install(app_dir):
 
     # Kopírování souborů rozšíření do cílové složky v aplikaci
     src_scripts_dir = os.path.join(current_directory, "scripts")
-    dst_dir = os.path.join(app_dir, 'extensions', 'clear_cuda_memory')
+    dst_dir = os.path.join(app_dir, 'extensions', 'stable-diffusion-cuda-mem-cleaner')
     
     if not os.path.exists(dst_dir):
         os.makedirs(dst_dir)
@@ -19,7 +19,7 @@ def install(app_dir):
     # Přidání rozšíření do seznamu rozšíření aplikace (pokud aplikace takový seznam má)
     # Toto je jen příklad a může vyžadovat úpravy podle toho, jak je vaše aplikace konfigurována.
     with open(os.path.join(app_dir, 'extensions', 'extensions.txt'), 'a') as f:
-        f.write('clear_cuda_memory.clear_cuda_memory_extension.ClearCudaMemoryExtension\n')
+        f.write('stable-diffusion-cuda-mem-cleaner\n')
 
 if __name__ == "__main__":
     # Zde můžete upravit cestu k vaší aplikaci, pokud je potřeba
