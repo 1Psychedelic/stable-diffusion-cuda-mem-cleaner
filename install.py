@@ -1,6 +1,7 @@
 import os
 import shutil
 import subprocess
+import launch
 
 def install(app_dir):
     # Získání aktuálního umístění skriptu
